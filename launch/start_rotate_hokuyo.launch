@@ -2,7 +2,22 @@
 
     <!-- Start Hokuyo laser scan -->
     <!-- NOTE: the frame ID of the "scan" topic is "laser" and is fixed by "urg_node" node -->
-    <node name="hokuyo_scan" pkg="urg_node" type="urg_node" args="/dev/ttyACM0" output="screen"/>
+    <!-- <node name="hokuyo_scan" pkg="urg_node" type="urg_node" args="/dev/ttyACM0" output="screen"/> -->
+    <node name="hokuyo_scan" pkg="urg_node" type="urg_node" output="screen">
+        <param name="ip_address" type="string" value="192.168.6.10"/>
+    </node>
+
+    <!-- Assemble Hokuyo scans into one pointcloud -->
+    <node type="laser_scan_assembler" pkg="laser_assembler" name="assembler_service">
+        <param name="max_scans" type="int" value="400" />
+        <param name="fixed_frame" type="string" value="/slip_ring" />
+    </node>
+    <node name="assemble_scans" pkg="rotate_hokuyo" type="assemble_scans.py" output="screen">
+        <param name="rate" type="double" value="0.5" />
+        <!-- rate : 2.0 for 1.0 rps i.e. pan_controller/joint_speed is set to 6.28
+             rate : 1.0 for 0.5 rps i.e. pan_controller/joint_speed is set to 3.14
+             rate : 0.5 for 0.25 rps i.e. pan_controller/joint_speed is set to 1.57 -->
+    </node>
 
     <!-- Establish connection with Dynamixel -->
     <rosparam file="$(find rotate_hokuyo)/config/dynamixel_rotate_config.yaml" command="load"/>
@@ -14,7 +29,7 @@
                     port_name: "/dev/ttyUSB0"
                     baud_rate: 57142
                     min_motor_id: 0
-                    max_motor_id: 2
+                    max_motor_id: 4
                     update_rate: 17.62
         </rosparam>
     </node>
@@ -31,11 +46,12 @@
 
     <!-- Publish the static tf due to the physical placement of the motor -->
     <!-- <node name="slip_ring_2_hokuyo_sensor" pkg="tf" type="static_transform_publisher" args="0 0 1 0 0 0 /slip_ring /hokuyo_sensor 100" /> -->
-    <node name="slip_ring_2_hokuyo_sensor" pkg="tf" type="static_transform_publisher" args="0 0 10 1.57079632679 1.57079632679 1.57079632679 /slip_ring /hokuyo_sensor 100" />
+    <node name="slip_ring_2_hokuyo_sensor" pkg="tf" type="static_transform_publisher" args="0 0 1 1.57079632679 -1.57079632679 1.57079632679 /slip_ring /hokuyo_sensor 100" />
+    <!-- <node name="slip_ring_2_hokuyo_sensor" pkg="tf" type="static_transform_publisher" args="0 0 1 1.57079632679 1.57079632679 1.57079632679 /slip_ring /hokuyo_sensor 100" /> -->
 
     <!-- Launch rviz, via terminal OR within this launch file -->
     <!-- rviz -d $(find rotate_hokuyo)/rviz/rot_hokuyo.rviz -->
-    <!-- <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find rotate_hokuyo)/rviz/rot_hokuyo.rviz" /> -->
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find rotate_hokuyo)/rviz/rot_hokuyo.rviz" />
 
     <!-- Store data in a bag -->
     <!--node name="bagfilerecord" pkg="rosbag" type="record" args="record -a"/-->

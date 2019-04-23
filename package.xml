@@ -13,7 +13,7 @@
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>BSD</license>
 
 
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
@@ -40,10 +40,10 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>dynamixel_controllers</build_depend>
+  <build_depend>dynamixel_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>tf</build_depend>
-  <run_depend>dynamixel_controllers</run_depend>
+  <run_depend>dynamixel_msgs</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>tf</run_depend>
 

@@ -12,8 +12,7 @@ void scanCallback(const dynamixel_msgs::JointState::ConstPtr &motor_angle)
   tf::Transform transform;
   tf::Quaternion q;
 
-  q.setRPY(motor_pos, 0, 0);
-  // q.setRPY(0, 0, 0);
+  q.setRPY(-motor_pos, 0, 0); // Negative because Hokuyo and Dynamixel are rotating in opposite directions
   transform.setRotation(q);
   br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "/hokuyo_sensor", "/laser"));
 }

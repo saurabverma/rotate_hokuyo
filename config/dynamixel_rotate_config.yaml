@@ -4,12 +4,13 @@ pan_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: slip_ring
-    joint_speed: 0.0 # zero speed for testing only
+    # joint_speed: 0.0 # zero speed for testing only
     # joint_speed: 0.5 # slow speed for testing only
+    joint_speed: 1.57 # 1/4 rotation per second (recommended for dense data)
     # joint_speed: 3.14 # 1/2 rotation per second
     # joint_speed: 6.28 # 1 rotation per second
     motor:
-        id: 1
+        id: 4 # NOTE: Must update if motor ID not found
         init: 512
         min: 0
         max: 1023
