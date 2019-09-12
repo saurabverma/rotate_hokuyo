@@ -8,11 +8,17 @@ There are a total of 3 coordinate frames considered here. One is that of the bas
 
 Note that this package 'rotate_hokuyo' (https://github.com/saurabverma/rotate_hokuyo.git) is dependent on following packages:
 
-Dynamixel
+1. Dynamixel
+```bash
 sudo apt install ros-kinetic-dynamixel-motor
+```
 
-Hokuyo
+2. Hokuyo
+```bash
 sudo apt install ros-kinetic-urg-node
+```
 
-Laser assembler
+3. Laser assembler
+```bash
 sudo apt install ros-kinetic-laser-assembler
+```
