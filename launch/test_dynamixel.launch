@@ -1,6 +1,6 @@
 <launch>
 
-    <!-- Establish connection with Dynamixel -->
+    <!-- Establish connection with Dynamixel, the id found by this guy must be set into config yaml file -->
     <rosparam file="$(find rotate_hokuyo)/config/dynamixel_rotate_config.yaml" command="load"/>
     <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
         <rosparam>
@@ -8,14 +8,19 @@
             serial_ports:
                 pan_tilt_port:
                     port_name: "/dev/ttyUSB0"
-                    baud_rate: 57142
+                    baud_rate: 200000
+                    <!-- baud_rate: 57142 -->
                     min_motor_id: 0
-                    max_motor_id: 4
+                    <!-- min_motor_id: 0 -->
+                    max_motor_id: 2
+                    <!-- max_motor_id: 255 -->
                     update_rate: 17.62
+                    <!-- update_rate: 20 -->
         </rosparam>
     </node>
 
     <!-- NOTE: Physically set the 'wheel mode' to ON by running the following command in linux terminal -->
+    <!-- NOTE: ccw-angle-limit = {0, 1} means {velocity, position} control -> shift to position control to have zero velocity -->
     <!-- rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=100000 -'-ccw-angle-limit=0 ID -->
     <!-- Ex: rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=57142 -'-ccw-angle-limit=0 1 -->
 
