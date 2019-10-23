@@ -1,10 +1,14 @@
 <launch>
 
+    <!-- For LAN connection, create 'ethernet' connection in Ubuntu with manual connection (and no automatic connection). -->
+    <!-- Set same IP address as the hokuyo (except last 3 digits), set addr as 255.255.255.0 -->
+    <!-- connect to this new network and ping hokuyo ip address for confirmation -->
+
     <!-- Start Hokuyo laser scan via USB or LAN (requires Ubuntu on same network as hokuyo sensor) -->
     <!-- NOTE: the frame ID of the "scan" topic is "laser" and is fixed by "urg_node" node -->
     <!-- <node name="hokuyo_scan" pkg="urg_node" type="urg_node" args="/dev/ttyACM0" output="screen"/> -->
     <node name="hokuyo_scan" pkg="urg_node" type="urg_node" output="screen">
-        <param name="ip_address" type="string" value="192.168.6.10"/>
+        <param name="ip_address" type="string" value="192.168.2.184"/>
     </node>
 
     <!-- Launch rviz, via terminal OR within this launch file -->

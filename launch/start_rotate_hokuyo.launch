@@ -4,7 +4,7 @@
     <!-- NOTE: the frame ID of the "scan" topic is "laser" and is fixed by "urg_node" node -->
     <!-- <node name="hokuyo_scan" pkg="urg_node" type="urg_node" args="/dev/ttyACM0" output="screen"/> -->
     <node name="hokuyo_scan" pkg="urg_node" type="urg_node" output="screen">
-        <param name="ip_address" type="string" value="192.168.6.10"/>
+        <param name="ip_address" type="string" value="192.168.2.184"/>
     </node>
 
     <!-- Assemble Hokuyo scans into one pointcloud -->
@@ -19,6 +19,13 @@
              rate : 0.5 for 0.25 rps i.e. pan_controller/joint_speed is set to 1.57 -->
     </node>
 
+    <!-- NOTE: Physically set the 'wheel mode' to ON by running the following command in linux terminal -->
+    <!-- rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=100000 -'-ccw-angle-limit=0 ID -->
+    <!-- Ex: rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=57142 -'-ccw-angle-limit=0 1 -->
+
+    <!-- Set dynamixel in velocity mode -->
+    <node name="dynamixel_driver" pkg="dynamixel_driver" type="set_servo_config.py" args="--port=/dev/ttyUSB0 --baud=200000 --ccw-angle-limit=0 1" output="screen"/>
+
     <!-- Establish connection with Dynamixel -->
     <rosparam file="$(find rotate_hokuyo)/config/dynamixel_rotate_config.yaml" command="load"/>
     <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
@@ -27,16 +34,12 @@
             serial_ports:
                 pan_tilt_port:
                     port_name: "/dev/ttyUSB0"
-                    baud_rate: 57142
+                    baud_rate: 200000
                     min_motor_id: 0
                     max_motor_id: 4
                     update_rate: 17.62
         </rosparam>
     </node>
-
-    <!-- NOTE: Physically set the 'wheel mode' to ON by running the following command in linux terminal -->
-    <!-- rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=100000 -'-ccw-angle-limit=0 ID -->
-    <!-- Ex: rosrun dynamixel_driver set_servo_config.py -'-port=/dev/ttyUSB0 -'-baud=57142 -'-ccw-angle-limit=0 1 -->
 
     <!-- notify Dynamixel to start rotating -->
     <node name="dynamixel_controller" pkg="dynamixel_controllers" type="controller_spawner.py" args="--manager=dxl_manager --port=pan_tilt_port --type=simple pan_controller" output="screen"/>
